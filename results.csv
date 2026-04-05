@@ -1,2 +1,1 @@
-Name,Department,Date,Internal_Motivation_Score,External_Motivation_Score,Stress_Level_Score,Burnout_Risk_Score,AI_Advice
-Sevinch,Engineering,2026-03-13 12:22:16,6.0,6.0,6.0,6.0,"AI Analysis temporarily unavailable. Error: No secrets files found. Valid paths for a secrets.toml file are: C:\Users\user\.streamlit\secrets.toml, D:\projects\sevinch's\.streamlit\secrets.toml"
+Name,Department,Date,Моддий мотивация,Иш шароити,Раҳбарият ва бошқарув,Касбий ривожланиш,Ички мотивация
