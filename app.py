@@ -13,11 +13,21 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ============================================================
+# ADMIN CREDENTIALS — change these to set your login/password
+# ============================================================
+ADMIN_LOGIN = "admin"
+ADMIN_PASSWORD = "sevinch2024"
+
 # Initialize session state
 if 'page' not in st.session_state:
-    st.session_state.page = 'user'
+    st.session_state.page = 'survey'
 if 'test_completed' not in st.session_state:
     st.session_state.test_completed = False
+if 'admin_logged_in' not in st.session_state:
+    st.session_state.admin_logged_in = False
+if 'show_admin_login' not in st.session_state:
+    st.session_state.show_admin_login = False
 
 # Options for radio buttons
 RADIO_OPTIONS = [
@@ -66,14 +76,19 @@ def save_results(name, dept, scores):
     df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
     df.to_csv('results.csv', index=False)
 
-# Sidebar navigation
+# Sidebar — survey only, no admin link visible
 st.sidebar.title("🧠 Сўровнома тизими")
-page = st.sidebar.radio("Навигация", ["Сўровномадан ўтиш", "Админ Панель"])
 
 # Initialize CSV file
 initialize_csv()
 
-if page == "Сўровномадан ўтиш":
+# ============================================================
+# Determine which page to show
+# ============================================================
+show_admin = st.session_state.show_admin_login or st.session_state.admin_logged_in
+
+if not show_admin:
+    # ====================== SURVEY PAGE ======================
     st.title("🧠 Ходимлар Мотивацияси ва Иш Шароити Сўрови")
     st.markdown("---")
     
@@ -151,9 +166,50 @@ if page == "Сўровномадан ўтиш":
 
         st.session_state.test_completed = True
 
-else:  # Admin Dashboard
+    # ====================== FOOTER ======================
+    st.markdown("---")
+    st.markdown("💚 *Ходимлар сўровномаси тизими*")
+
+    # Hidden admin button — very small, at the very bottom, looks like a footer link
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    if st.button("⚙️", help="Тизим созламалари", key="admin_access_btn"):
+        st.session_state.show_admin_login = True
+        st.rerun()
+
+elif st.session_state.show_admin_login and not st.session_state.admin_logged_in:
+    # ====================== ADMIN LOGIN PAGE ======================
+    st.title("🔐 Тизимга кириш")
+    st.markdown("---")
+
+    with st.form("admin_login_form"):
+        login_input = st.text_input("Логин:", placeholder="Логинни киритинг")
+        password_input = st.text_input("Парол:", type="password", placeholder="Паролни киритинг")
+        submitted = st.form_submit_button("Кириш", type="primary")
+
+        if submitted:
+            if login_input == ADMIN_LOGIN and password_input == ADMIN_PASSWORD:
+                st.session_state.admin_logged_in = True
+                st.session_state.show_admin_login = False
+                st.rerun()
+            else:
+                st.error("❌ Логин ёки парол нотўғри!")
+
+    if st.button("⬅️ Орқага"):
+        st.session_state.show_admin_login = False
+        st.rerun()
+
+else:
+    # ====================== ADMIN DASHBOARD ======================
     st.title("📊 Админ Панель")
     st.markdown("---")
+
+    # Logout button in sidebar
+    if st.sidebar.button("🚪 Чиқиш (Админ)"):
+        st.session_state.admin_logged_in = False
+        st.session_state.show_admin_login = False
+        st.rerun()
     
     try:
         df = pd.read_csv('results.csv')
@@ -223,5 +279,5 @@ else:  # Admin Dashboard
     except Exception as e:
         st.error(f"Хатолик: {str(e)}")
 
-st.markdown("---")
-st.markdown("💚 *Ходимлар сўровномаси тизими*")
+    st.markdown("---")
+    st.markdown("💚 *Ходимлар сўровномаси тизими*")
