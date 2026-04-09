@@ -105,66 +105,65 @@ if not show_admin:
     
     if not name:
         st.warning("Давом этиш учун исмингизни киритинг.")
-        st.stop()
-    
-    st.markdown("---")
-    
-    # Motivation and Stress Test
-    st.header("📋 Сўровнома саволлари")
-    st.write("Илтимос, барча саволларга холисона жавоб беринг.")
-    
-    st.subheader("💰 Моддий мотивация")
-    q1 = st.radio("1. Мен олаётган иш ҳақим меҳнатимга муносиб деб ҳисоблайман.", RADIO_OPTIONS, index=2)
-    q2 = st.radio("2. Муассасадаги мукофот ва қўшимча тўловлар мени рағбатлантиради.", RADIO_OPTIONS, index=2)
-    q3 = st.radio("3. Моддий рағбат (премия, устама) иш самарадорлигимни оширади.", RADIO_OPTIONS, index=2)
-
-    st.subheader("🏢 Иш шароити")
-    q4 = st.radio("4. Иш жойимдаги шароитлар (жиҳозлар, тозалик, қулайлик) мени қониқтиради.", RADIO_OPTIONS, index=2)
-    q5 = st.radio("5. Иш юкламаси адолатли тақсимланган деб ўйлайман.", RADIO_OPTIONS, index=2)
-    q6 = st.radio("6. Иш жадвалим мен учун мақбул.", RADIO_OPTIONS, index=2)
-
-    st.subheader("👔 Раҳбарият ва бошқарув")
-    q7 = st.radio("7. Раҳбарият менинг меҳнатимни муносиб баҳолайди.", RADIO_OPTIONS, index=2)
-    q8 = st.radio("8. Раҳбарим билан очиқ мулоқот қилиш имкониятига эгаман.", RADIO_OPTIONS, index=2)
-    q9 = st.radio("9. Муассасада қарорлар адолатли қабул қилинади.", RADIO_OPTIONS, index=2)
-
-    st.subheader("📈 Касбий ривожланиш")
-    q10 = st.radio("10. Муассасада малакамни ошириш имкониятлари етарли.", RADIO_OPTIONS, index=2)
-    q11 = st.radio("11. Янги кўникмалар ўрганишга рағбатлантириламан.", RADIO_OPTIONS, index=2)
-    q12 = st.radio("12. Касбий ўсиш истиқболим бор деб ҳис қиламан.", RADIO_OPTIONS, index=2)
-
-    st.subheader("❤️ Ички (номоддий) мотивация")
-    q13 = st.radio("13. Ишдан маънавий қониқиш оламан.", RADIO_OPTIONS, index=2)
-    q14 = st.radio("14. Жамоада ишлаш муҳити менга ёқади.", RADIO_OPTIONS, index=2)
-    q15 = st.radio("15. Яқин келажакда шу муассасада ишлашни давом эттирмоқчиман.", RADIO_OPTIONS, index=2)
-
-    if st.button("🚀 Натижаларни юбориш", type="primary"):
-        scores = {
-            'material': round((calculate_score(q1) + calculate_score(q2) + calculate_score(q3)) / 3, 1),
-            'conditions': round((calculate_score(q4) + calculate_score(q5) + calculate_score(q6)) / 3, 1),
-            'management': round((calculate_score(q7) + calculate_score(q8) + calculate_score(q9)) / 3, 1),
-            'development': round((calculate_score(q10) + calculate_score(q11) + calculate_score(q12)) / 3, 1),
-            'internal': round((calculate_score(q13) + calculate_score(q14) + calculate_score(q15)) / 3, 1)
-        }
-        
-        # Save results
-        save_results(name, department, scores)
-        
-        # Display results
-        st.success("✅ Сўровнома муваффақиятли якунланди!")
+    else:
         st.markdown("---")
         
-        st.header("📊 Сизнинг натижаларингиз (Ўртача баллар 1-5)")
+        # Motivation and Stress Test
+        st.header("📋 Сўровнома саволлари")
+        st.write("Илтимос, барча саволларга холисона жавоб беринг.")
         
-        fig = go.Figure(data=[
-            go.Bar(name='Кўрсаткичлар', x=['Моддий мотивация', 'Иш шароити', 'Раҳбарият ва бошқарув', 'Касбий ривожланиш', 'Ички мотивация'], 
-                   y=[scores['material'], scores['conditions'], scores['management'], scores['development'], scores['internal']], 
-                   marker_color=['#2196F3', '#FF9800', '#F44336', '#9C27B0', '#4CAF50'])
-        ])
-        fig.update_layout(yaxis=dict(range=[0, 5]))
-        st.plotly_chart(fig, use_container_width=True)
+        st.subheader("💰 Моддий мотивация")
+        q1 = st.radio("1. Мен олаётган иш ҳақим меҳнатимга муносиб деб ҳисоблайман.", RADIO_OPTIONS, index=2)
+        q2 = st.radio("2. Муассасадаги мукофот ва қўшимча тўловлар мени рағбатлантиради.", RADIO_OPTIONS, index=2)
+        q3 = st.radio("3. Моддий рағбат (премия, устама) иш самарадорлигимни оширади.", RADIO_OPTIONS, index=2)
 
-        st.session_state.test_completed = True
+        st.subheader("🏢 Иш шароити")
+        q4 = st.radio("4. Иш жойимдаги шароитлар (жиҳозлар, тозалик, қулайлик) мени қониқтиради.", RADIO_OPTIONS, index=2)
+        q5 = st.radio("5. Иш юкламаси адолатли тақсимланган деб ўйлайман.", RADIO_OPTIONS, index=2)
+        q6 = st.radio("6. Иш жадвалим мен учун мақбул.", RADIO_OPTIONS, index=2)
+
+        st.subheader("👔 Раҳбарият ва бошқарув")
+        q7 = st.radio("7. Раҳбарият менинг меҳнатимни муносиб баҳолайди.", RADIO_OPTIONS, index=2)
+        q8 = st.radio("8. Раҳбарим билан очиқ мулоқот қилиш имкониятига эгаман.", RADIO_OPTIONS, index=2)
+        q9 = st.radio("9. Муассасада қарорлар адолатли қабул қилинади.", RADIO_OPTIONS, index=2)
+
+        st.subheader("📈 Касбий ривожланиш")
+        q10 = st.radio("10. Муассасада малакамни ошириш имкониятлари етарли.", RADIO_OPTIONS, index=2)
+        q11 = st.radio("11. Янги кўникмалар ўрганишга рағбатлантириламан.", RADIO_OPTIONS, index=2)
+        q12 = st.radio("12. Касбий ўсиш истиқболим бор деб ҳис қиламан.", RADIO_OPTIONS, index=2)
+
+        st.subheader("❤️ Ички (номоддий) мотивация")
+        q13 = st.radio("13. Ишдан маънавий қониқиш оламан.", RADIO_OPTIONS, index=2)
+        q14 = st.radio("14. Жамоада ишлаш муҳити менга ёқади.", RADIO_OPTIONS, index=2)
+        q15 = st.radio("15. Яқин келажакда шу муассасада ишлашни давом эттирмоқчиман.", RADIO_OPTIONS, index=2)
+
+        if st.button("🚀 Натижаларни юбориш", type="primary"):
+            scores = {
+                'material': round((calculate_score(q1) + calculate_score(q2) + calculate_score(q3)) / 3, 1),
+                'conditions': round((calculate_score(q4) + calculate_score(q5) + calculate_score(q6)) / 3, 1),
+                'management': round((calculate_score(q7) + calculate_score(q8) + calculate_score(q9)) / 3, 1),
+                'development': round((calculate_score(q10) + calculate_score(q11) + calculate_score(q12)) / 3, 1),
+                'internal': round((calculate_score(q13) + calculate_score(q14) + calculate_score(q15)) / 3, 1)
+            }
+            
+            # Save results
+            save_results(name, department, scores)
+            
+            # Display results
+            st.success("✅ Сўровнома муваффақиятли якунланди!")
+            st.markdown("---")
+            
+            st.header("📊 Сизнинг натижаларингиз (Ўртача баллар 1-5)")
+            
+            fig = go.Figure(data=[
+                go.Bar(name='Кўрсаткичлар', x=['Моддий мотивация', 'Иш шароити', 'Раҳбарият ва бошқарув', 'Касбий ривожланиш', 'Ички мотивация'], 
+                       y=[scores['material'], scores['conditions'], scores['management'], scores['development'], scores['internal']], 
+                       marker_color=['#2196F3', '#FF9800', '#F44336', '#9C27B0', '#4CAF50'])
+            ])
+            fig.update_layout(yaxis=dict(range=[0, 5]))
+            st.plotly_chart(fig, use_container_width=True)
+
+            st.session_state.test_completed = True
 
     # ====================== FOOTER ======================
     st.markdown("---")
