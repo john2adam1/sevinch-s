@@ -79,6 +79,18 @@ def save_results(name, dept, scores):
 # Sidebar — survey only, no admin link visible
 st.sidebar.title("🧠 Сўровнома тизими")
 
+# Admin access button directly below title
+if st.session_state.admin_logged_in:
+    if st.sidebar.button("🚪 Чиқиш", key="admin_logout_btn"):
+        st.session_state.admin_logged_in = False
+        st.session_state.show_admin_login = False
+        st.rerun()
+else:
+    if not st.session_state.show_admin_login:
+        if st.sidebar.button("⚙️ Админ", help="Админ панелга кириш", key="admin_access_btn"):
+            st.session_state.show_admin_login = True
+            st.rerun()
+
 # Initialize CSV file
 initialize_csv()
 
@@ -86,20 +98,6 @@ initialize_csv()
 # Determine which page to show
 # ============================================================
 show_admin = st.session_state.show_admin_login or st.session_state.admin_logged_in
-
-# Add space to push sidebar items to the bottom
-for _ in range(15):
-    st.sidebar.markdown("<br>", unsafe_allow_html=True)
-
-if not show_admin:
-    if st.sidebar.button("Админ", help="Админ панелга кириш", key="admin_access_btn"):
-        st.session_state.show_admin_login = True
-        st.rerun()
-else:
-    if st.sidebar.button("🚪 Чиқиш", key="admin_logout_btn"):
-        st.session_state.admin_logged_in = False
-        st.session_state.show_admin_login = False
-        st.rerun()
 
 if not show_admin:
     # ====================== SURVEY PAGE ======================
