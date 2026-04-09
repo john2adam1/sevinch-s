@@ -173,7 +173,7 @@ if not show_admin:
     st.markdown("")
     st.markdown("")
     st.markdown("")
-    if st.button("⚙️", help="Тизим созламалари", key="admin_access_btn"):
+    if st.button("Админ", help="Админ панелга кириш", key="admin_access_btn"):
         st.session_state.show_admin_login = True
         st.rerun()
 
