@@ -77,19 +77,33 @@ def save_results(name, dept, scores):
     df.to_csv('results.csv', index=False)
 
 # Sidebar — survey only, no admin link visible
+# Sidebar — menyu qismi
 st.sidebar.title("🧠 Сўровнома тизими")
 
-# Admin access button directly below title
-if st.session_state.admin_logged_in:
-    if st.sidebar.button("🚪 Чиқиш", key="admin_logout_btn"):
-        st.session_state.admin_logged_in = False
-        st.session_state.show_admin_login = False
-        st.rerun()
-else:
-    if not st.session_state.show_admin_login:
-        if st.sidebar.button("⚙️ Админ", help="Админ панелга кириш", key="admin_access_btn"):
-            st.session_state.show_admin_login = True
+# Yuqori qismda bo'sh joy yaratamiz (bu admin tugmasini pastga surish uchun)
+# Bu qismga boshqa menyu tugmalarini qo'shishingiz mumkin
+st.sidebar.markdown("### Асосий меню")
+st.sidebar.info("Илтимос, саволларга холисона жавоб беринг.")
+
+# --- Admin tugmasini eng pastga joylashtirish mantiqi ---
+# Streamlitda "spacer" yaratish uchun bo'sh konteynerdan foydalanamiz
+for _ in range(15): # Bu raqamni ehtiyojga qarab o'zgartirish mumkin
+    st.sidebar.write("") 
+
+# Admin access tugmasi menyuning eng tagida
+with st.sidebar.container():
+    st.sidebar.markdown("---") # Chiziq bilan ajratish
+    if st.session_state.admin_logged_in:
+        if st.sidebar.button("🚪 Чиқиш", key="admin_logout_btn", use_container_width=True):
+            st.session_state.admin_logged_in = False
+            st.session_state.show_admin_login = False
             st.rerun()
+    else:
+        if not st.session_state.show_admin_login:
+            if st.sidebar.button("⚙️ Созламалар", help="Админ панелга кириш", key="admin_access_btn", use_container_width=True):
+                st.session_state.show_admin_login = True
+                st.rerun()
+
 
 # Initialize CSV file
 initialize_csv()
