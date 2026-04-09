@@ -87,6 +87,20 @@ initialize_csv()
 # ============================================================
 show_admin = st.session_state.show_admin_login or st.session_state.admin_logged_in
 
+# Add space to push sidebar items to the bottom
+for _ in range(15):
+    st.sidebar.markdown("<br>", unsafe_allow_html=True)
+
+if not show_admin:
+    if st.sidebar.button("Админ", help="Админ панелга кириш", key="admin_access_btn"):
+        st.session_state.show_admin_login = True
+        st.rerun()
+else:
+    if st.sidebar.button("🚪 Чиқиш", key="admin_logout_btn"):
+        st.session_state.admin_logged_in = False
+        st.session_state.show_admin_login = False
+        st.rerun()
+
 if not show_admin:
     # ====================== SURVEY PAGE ======================
     st.title("🧠 Ходимлар Мотивацияси ва Иш Шароити Сўрови")
@@ -169,14 +183,6 @@ if not show_admin:
     st.markdown("---")
     st.markdown("💚 *Ходимлар сўровномаси тизими*")
 
-    # Hidden admin button — very small, at the very bottom, looks like a footer link
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
-    if st.button("Админ", help="Админ панелга кириш", key="admin_access_btn"):
-        st.session_state.show_admin_login = True
-        st.rerun()
-
 elif st.session_state.show_admin_login and not st.session_state.admin_logged_in:
     # ====================== ADMIN LOGIN PAGE ======================
     st.title("🔐 Тизимга кириш")
@@ -204,12 +210,6 @@ else:
     st.title("📊 Админ Панель")
     st.markdown("---")
 
-    # Logout button in sidebar
-    if st.sidebar.button("🚪 Чиқиш (Админ)"):
-        st.session_state.admin_logged_in = False
-        st.session_state.show_admin_login = False
-        st.rerun()
-    
     try:
         df = pd.read_csv('results.csv')
         
